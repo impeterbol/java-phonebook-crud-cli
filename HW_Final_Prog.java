@@ -23,7 +23,7 @@ public class HW_Final_Prog {
 
         String line;
         int linesInTheFile = countLinesInTheFile();
-        System.out.println(linesInTheFile);
+        // System.out.println(linesInTheFile);
      
       String [] firstName = new String [linesInTheFile];
       String [] lastName = new String [linesInTheFile];
@@ -31,11 +31,17 @@ public class HW_Final_Prog {
       String [] companyData = new String [linesInTheFile];
       
       Contact [] arrOfContacts = new Contact[linesInTheFile];
+      System.out.println("Hello! Please enter filename to read from including txt. i.e. nameBook.txt >");
+        Scanner keyboard = new Scanner(System.in);
+        String userFileName = keyboard.next();
+        System.out.println(userFileName);
+        
+
         
     Scanner inputStream = null;
 
         try {
-            inputStream = new Scanner (new FileInputStream("nameBook.txt"));
+            inputStream = new Scanner (new FileInputStream(userFileName));
         } catch (FileNotFoundException e) {
             System.out.println("Here is a filenotfound exception");
             System.exit(0);
@@ -66,7 +72,7 @@ public class HW_Final_Prog {
       ListOfContacts list1 = new ListOfContacts(arrOfContacts);
       
         //add method handleUserOptions (passing array of contacts )
-        handleUserOptions(list1, arrOfContacts);
+        handleUserOptions(list1, arrOfContacts, userFileName);
 
         
 
@@ -74,7 +80,7 @@ public class HW_Final_Prog {
     }
 
 
-    public static void handleUserOptions(ListOfContacts list1, Contact [] arrOfContacts){
+    public static void handleUserOptions(ListOfContacts list1, Contact [] arrOfContacts, String userFileName){
         // System.out.println(list1.removeNull());
         // ListOfContacts list1 = new ListOfContacts(arrOfContacts);
         PrintWriter outputStream = null;
