@@ -22,7 +22,12 @@ public class HW_Final_Prog {
         //remove blank lines from the file TODO
 
         String line;
-        int linesInTheFile = countLinesInTheFile();
+        System.out.println("Hello! Please enter filename to read from including txt. i.e. nameBook.txt >");
+        Scanner keyboard = new Scanner(System.in);
+        String userFileName = keyboard.next();
+        System.out.println(userFileName);
+
+        int linesInTheFile = countLinesInTheFile(userFileName);
         // System.out.println(linesInTheFile);
      
       String [] firstName = new String [linesInTheFile];
@@ -31,10 +36,7 @@ public class HW_Final_Prog {
       String [] companyData = new String [linesInTheFile];
       
       Contact [] arrOfContacts = new Contact[linesInTheFile];
-      System.out.println("Hello! Please enter filename to read from including txt. i.e. nameBook.txt >");
-        Scanner keyboard = new Scanner(System.in);
-        String userFileName = keyboard.next();
-        System.out.println(userFileName);
+     
         
 
         
@@ -127,7 +129,7 @@ public class HW_Final_Prog {
         System.out.println(Arrays.toString(list1.listAllContact()));
 
         try {
-            outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+            outputStream = new PrintWriter(new FileOutputStream(userFileName));
         } catch (FileNotFoundException e) {
             System.out.println("Error creating/accessing the file stats.txt."); 
             System.exit(0);
@@ -160,7 +162,7 @@ public class HW_Final_Prog {
 
                 list1.removeContact(contactsToRemove);
                 try {
-                    outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
                     System.out.println("Error creating/accessing the file stats.txt."); 
                     System.exit(0);
@@ -203,7 +205,7 @@ public class HW_Final_Prog {
                  }
                  list1.updateContactFistName(contactsToUpdate);
                  try {
-                    outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
                     System.out.println("Error creating/accessing the file stats.txt."); 
                     System.exit(0);
@@ -225,7 +227,7 @@ public class HW_Final_Prog {
                  }
                  list1.updateContactLastName(contactsToUpdate);
                  try {
-                    outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
                     System.out.println("Error creating/accessing the file stats.txt."); 
                     System.exit(0);
@@ -249,7 +251,7 @@ public class HW_Final_Prog {
                  list1.updateContactPhoneNumber(contactsToUpdate);
 
                  try {
-                    outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
                     System.out.println("Error creating/accessing the file stats.txt."); 
                     System.exit(0);
@@ -270,7 +272,7 @@ public class HW_Final_Prog {
                  }
                  list1.updateContactCompanyName(contactsToUpdate);
                  try {
-                    outputStream = new PrintWriter(new FileOutputStream("nameBook.txt"));
+                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
                     System.out.println("Error creating/accessing the file stats.txt."); 
                     System.exit(0);
@@ -431,12 +433,12 @@ public class HW_Final_Prog {
         //end find by phone
     }
 
-    public static int countLinesInTheFile(){
+    public static int countLinesInTheFile(String userFileNameSelected){
         Scanner lineCounter = null;
         int counter=0;
 
         try {
-            lineCounter = new Scanner (new FileInputStream("nameBook.txt"));
+            lineCounter = new Scanner (new FileInputStream(userFileNameSelected));
         } catch (FileNotFoundException e) {
             System.out.println("Here is a filenotfound exception");
             System.exit(0);
