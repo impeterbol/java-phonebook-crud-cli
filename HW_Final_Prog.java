@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class HW_Final_Prog {
     public static void main(String[] args){
-
+        System.out.println("Hello! Welcome to the phoneBook app where you can create, read, update and delete entries using cli.");
         overall();
 
 
@@ -22,10 +22,11 @@ public class HW_Final_Prog {
         //remove blank lines from the file TODO
 
         String line;
-        System.out.println("Hello! Please enter filename to read from including txt. i.e. nameBook.txt >");
-        Scanner keyboard = new Scanner(System.in);
-        String userFileName = keyboard.next();
-        System.out.println(userFileName);
+        
+        
+        String userFileName = "nameBook.txt";
+        System.out.println("Please enter filename to read from including txt. i.e. nameBook.txt."+
+        " Currently reading from "+userFileName);
 
         int linesInTheFile = countLinesInTheFile(userFileName);
         // System.out.println(linesInTheFile);
@@ -153,31 +154,38 @@ public class HW_Final_Prog {
         String userInputPhoneNum = sc.next();
         Contact [] contactsToRemove = findByPhone(arrOfContacts, userInputPhoneNum);
         System.out.println("Here are the entries that you are planning to remove:");
-        for(int i=0;i<contactsToRemove.length;i++){
-           System.out.println(contactsToRemove[i].toString());
-        }
-        System.out.println("Continue? Enter 1 to continue or anything else to go back to main menu");
-        int userSelection = sc.nextInt();
-        if(userSelection == 1){
-
-                list1.removeContact(contactsToRemove);
-                try {
-                    outputStream = new PrintWriter(new FileOutputStream(userFileName));
-                } catch (FileNotFoundException e) {
-                    System.out.println("Error creating/accessing the file stats.txt."); 
-                    System.exit(0);
-                }
-                System.out.println("Writing to file");
-        
-                for(int i =0;i<list1.listAllContact().length;i++){
-                    outputStream.println(list1.listAllContact()[i]);
-                }
-                outputStream.close();
-                nextStep();
-        }
-        else{
+        if(contactsToRemove.length==0){
+            System.out.println("Nothing was found...");
             nextStep();
         }
+        else{
+            for(int i=0;i<contactsToRemove.length;i++){
+                System.out.println(contactsToRemove[i].toString());
+             }
+             System.out.println("Continue? Enter 1 to continue or anything else to go back to main menu");
+             int userSelection = sc.nextInt();
+             if(userSelection == 1){
+     
+                     list1.removeContact(contactsToRemove);
+                     try {
+                         outputStream = new PrintWriter(new FileOutputStream(userFileName));
+                     } catch (FileNotFoundException e) {
+                         System.out.println("Error creating/accessing the file stats.txt."); 
+                         System.exit(0);
+                     }
+                     System.out.println("Writing to file");
+             
+                     for(int i =0;i<list1.listAllContact().length;i++){
+                         outputStream.println(list1.listAllContact()[i]);
+                     }
+                     outputStream.close();
+                     nextStep();
+             }
+             else{
+                 nextStep();
+             }
+        }
+        
 
         // end of user choice 4
     }
@@ -253,10 +261,10 @@ public class HW_Final_Prog {
                  try {
                     outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
-                    System.out.println("Error creating/accessing the file stats.txt."); 
+                    System.out.println("Error creating/accessing the file "+userFileName); 
                     System.exit(0);
                 }
-                System.out.println("Writing to file");
+                System.out.println("Writing to file"+userFileName);
         
                 for(int i =0;i<list1.listAllContact().length;i++){
                     outputStream.println(list1.listAllContact()[i]);
@@ -274,7 +282,7 @@ public class HW_Final_Prog {
                  try {
                     outputStream = new PrintWriter(new FileOutputStream(userFileName));
                 } catch (FileNotFoundException e) {
-                    System.out.println("Error creating/accessing the file stats.txt."); 
+                    System.out.println("Error creating/accessing the file"+userFileName); 
                     System.exit(0);
                 }
                 System.out.println("Writing to file");
@@ -321,11 +329,11 @@ public class HW_Final_Prog {
         userInput = keyboard.nextInt();
         while(userInput!=1 && userInput!=2 && userInput!=3 && userInput!=4  && userInput!=5 && userInput!=0){
             
-            System.out.println("Please select a valid option 1-4 or 0 to exit");
+            System.out.println("Please select a valid option 1-5 or 0 to exit");
             
             userInput = keyboard.nextInt();
         }
-        System.out.println("Thank you!");
+      
         // keyboard.close();
         return userInput;
         
@@ -386,7 +394,7 @@ public class HW_Final_Prog {
        }
        else {
            String [] resEmpty = new String[1];
-           resEmpty[0] = "No such first name found... ";
+           resEmpty[0] = "No such entry found... ";
            return resEmpty;
        }
         
@@ -396,8 +404,7 @@ public class HW_Final_Prog {
     public static Contact [] findByPhone(Contact [] arrOfContacts, String phoneNum){
         
         Contact [] results = new Contact[arrOfContacts.length];
-        System.out.println("HERE RESULTS LENGTH");
-        System.out.println(arrOfContacts[1].getPhoneNumber());
+        
 
         for(int i=0,j=0;i<arrOfContacts.length;i++){
             if(phoneNum.toLowerCase().equals(arrOfContacts[i].getPhoneNumber().toLowerCase())){
@@ -418,7 +425,7 @@ public class HW_Final_Prog {
                     finalRes[a++]=results[z];
                 }
             }
-            System.out.println("HEREEEE ");
+            
 
             return finalRes;
 
@@ -426,7 +433,7 @@ public class HW_Final_Prog {
 
         else{
            Contact [] finalRes2 = new Contact [0];
-           System.out.println("NUUUUUL ");
+           
            return finalRes2;
     }
        
