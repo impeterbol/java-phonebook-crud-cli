@@ -84,7 +84,6 @@ public class ListOfContacts {
             
         }
         this.list = listAfterRemoving;
-        System.out.println(this.list.length);
         return listAfterRemoving;
         //end of remove contact
     }
@@ -156,9 +155,6 @@ public class ListOfContacts {
         return this.list;
     }
 
-    
-
-
     public String [] listAllContact(){
         String [] resAllContacts = new String [this.list.length];
         for(int i =0;i<this.list.length;i++){
@@ -170,7 +166,6 @@ public class ListOfContacts {
         }
         return resAllContacts;
     }
-
 
 //end of ListOfContacts
 }

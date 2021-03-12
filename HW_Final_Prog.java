@@ -1,3 +1,12 @@
+//Peter Boldyrev, CSS 142, Final program
+//PhoneBook program is a cli application utilizing crud (create/read/update/delete) approach 
+//PhoneBook has 6 functions: List all contacts from the file
+//Search by any contact parameter
+//Add a new Contact to the file
+//Delete a contact 
+//Update a contact info
+//Exit app
+
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.LanguageRange;
@@ -11,46 +20,41 @@ import java.util.Random;
 
 public class HW_Final_Prog {
     public static void main(String[] args){
-        System.out.println("Hello! Welcome to the phoneBook app where you can create, read, update and delete entries using cli.");
+        System.out.println("Hello! Welcome to the phoneBook app where you can "+
+        "create, read, update and delete entries using cli.");
+        //method contains the program
         overall();
-
-
         //end of main
     }
 
        public static void overall(){
-        //remove blank lines from the file TODO
-
         String line;
-        
-        
+        //reading from user defined file
         String userFileName = "nameBook.txt";
-        System.out.println("Please enter filename to read from including txt. i.e. nameBook.txt."+
+        System.out.println("Please add filename to read from on line 32 -- i.e. nameBook.txt."+
         " Currently reading from "+userFileName);
-
+        //count the lines method. Input - String of txt file where to read from;
+        //output - integer with number of lines
         int linesInTheFile = countLinesInTheFile(userFileName);
-        // System.out.println(linesInTheFile);
-     
-      String [] firstName = new String [linesInTheFile];
-      String [] lastName = new String [linesInTheFile];
-      String [] phoneNumber = new String [linesInTheFile];
-      String [] companyData = new String [linesInTheFile];
-      
-      Contact [] arrOfContacts = new Contact[linesInTheFile];
-     
-        
-
-        
-    Scanner inputStream = null;
-
+        //creating arrays for values in the file
+         String [] firstName = new String [linesInTheFile];
+         String [] lastName = new String [linesInTheFile];
+         String [] phoneNumber = new String [linesInTheFile];
+         String [] companyData = new String [linesInTheFile];
+        //creating array of contacts
+         Contact [] arrOfContacts = new Contact[linesInTheFile];
+        //adding scanner to use for file Input //NUMBER 5 FROM FEATURES TXT = FILE I/O
+        Scanner inputStream = null;
         try {
             inputStream = new Scanner (new FileInputStream(userFileName));
         } catch (FileNotFoundException e) {
             System.out.println("Here is a filenotfound exception");
             System.exit(0);
         }
-
+        //adding values to respective string arrays
         int i = 0;
+        //line 57 -73 can lead to grading 2 Looping with Repetition Control Structures
+        //there is a while loop and a for loop
         while(inputStream.hasNextLine()){
             line = inputStream.nextLine();
             Scanner lineScanner = new Scanner (line);
@@ -59,63 +63,59 @@ public class HW_Final_Prog {
                     lastName[i] = lineScanner.next();
                     phoneNumber[i] = lineScanner.next();
                     companyData[i] = lineScanner.next();
-                   
-                }
+            }
                 lineScanner.close();
                 i++;
        }
        inputStream.close();
-       
-
+       //creating an array of Contact class
        for(int j =0, k=0;j<arrOfContacts.length;j++){
         arrOfContacts[k]= new Contact(firstName[j],lastName[j],phoneNumber[j],companyData[j]);
         k++;
       }
-      
+      //creating a new list class // GRADING FEATURE 6 // Using Multiple Classes
       ListOfContacts list1 = new ListOfContacts(arrOfContacts);
-      
-        //add method handleUserOptions (passing array of contacts )
-        handleUserOptions(list1, arrOfContacts, userFileName);
-
-        
-
+      //passing list, array of contacts and user file name to proceed with handling user choices
+      //no output from this method but basically driving the program
+      handleUserOptions(list1, arrOfContacts, userFileName);
         //end of overall
     }
 
-
     public static void handleUserOptions(ListOfContacts list1, Contact [] arrOfContacts, String userFileName){
-        // System.out.println(list1.removeNull());
-        // ListOfContacts list1 = new ListOfContacts(arrOfContacts);
+      //preparing to write to the file - GRADING FEATURE 5 - File I/O
         PrintWriter outputStream = null;
         Scanner sc = new Scanner(System.in);
+        //mathod display main menu takes a scanner as an input
+        //displays options and returns user selection as an integer
         int userChoice = displayMainMenu(sc);
 
+        //handling user choices
        if(userChoice ==1){
-       
+       //list all contacts is a method that takes array of strings and displays all contacts
+       //that were read from user file - basically showing what is currently in the file
         listAllContacts(list1.listAllContact());
-   
+        //nextStep is a method that doesn't take any inputs/outputs
+        //and doesn't return anything but asks user if user wants to proceed or exit
         nextStep();
        }
-
+        //handling user choices
        if(userChoice ==2){
-        // Scanner keyboard1 = new Scanner(System.in);
         System.out.println("Please enter first / last / phone number"+
         " / company to get all relevant results >");
         String userInputFirst = sc.next();
-        // System.out.println(userInputFirst);
-        // keyboard1.close();
+        //search method takes array of contacts and string user input as an input
+        // returns a array of strings as search results
         String [] searchRes = searchMethod(arrOfContacts, userInputFirst);
-
         for(int i=0;i<searchRes.length;i++){
             System.out.println(searchRes[i]);
         }
-
         nextStep();
         //end of userChoice2
        }
 
+       //handling user choices
        if(userChoice ==3){
-
+           //asking user parameters to create a new Contact object
         System.out.println("Please enter first name as one word ");
         String userFistName = sc.next();
         System.out.println("Please enter last name as one word ");
@@ -124,11 +124,12 @@ public class HW_Final_Prog {
         String userPhoneNumber = sc.next();
         System.out.println("Please enter comany name as one word ");
         String userCompanyName = sc.next();
-
+        //creating a new contact object and adding it to the list class
         Contact userContact = new Contact(userFistName,userLastName,userPhoneNumber,userCompanyName);
-        System.out.println(list1.enterContact(userContact));
-        System.out.println(Arrays.toString(list1.listAllContact()));
-
+        list1.enterContact(userContact);
+       //re-writing the file to avoid formatting problems. I coudl also append the last added item 
+       //but after testing on mac and pc program had different behavior
+       //for the purpose of this program it seems ok to re-write but in general of it's resource intensive
         try {
             outputStream = new PrintWriter(new FileOutputStream(userFileName));
         } catch (FileNotFoundException e) {
@@ -141,19 +142,19 @@ public class HW_Final_Prog {
             outputStream.println(list1.listAllContact()[i]);
         }
         outputStream.close();
-       
-
         nextStep();
-        // arrOfContacts.enterContact(userContact);
-        
         //end of option 3
        }
 
        if(userChoice == 4){
         System.out.println("Please enter phonenumber >");
         String userInputPhoneNum = sc.next();
+        //method findbyPhone takes array of contacts and user entry of phone number and returns
+        //array of results that need to be removed
         Contact [] contactsToRemove = findByPhone(arrOfContacts, userInputPhoneNum);
         System.out.println("Here are the entries that you are planning to remove:");
+        //handling the emply array case
+        //techincally this can be graded as a GRADING FEATURE 4 Branching with Selection Control Structures:
         if(contactsToRemove.length==0){
             System.out.println("Nothing was found...");
             nextStep();
@@ -162,10 +163,14 @@ public class HW_Final_Prog {
             for(int i=0;i<contactsToRemove.length;i++){
                 System.out.println(contactsToRemove[i].toString());
              }
+             //asking the user final time to make sure no mistake was made
              System.out.println("Continue? Enter 1 to continue or anything else to go back to main menu");
              int userSelection = sc.nextInt();
              if(userSelection == 1){
-     
+                    //calling the list1 class method of removing the contact//
+                    //takes array of contacts as input, re-creates a list without them
+                    //please see ListOfContacts.java for details on the method and to grade the
+                    // GRADING FEATURE 3  Nested Loops
                      list1.removeContact(contactsToRemove);
                      try {
                          outputStream = new PrintWriter(new FileOutputStream(userFileName));
@@ -174,7 +179,7 @@ public class HW_Final_Prog {
                          System.exit(0);
                      }
                      System.out.println("Writing to file");
-             
+                     //re-writing the file again as I mentioned for styling purposes
                      for(int i =0;i<list1.listAllContact().length;i++){
                          outputStream.println(list1.listAllContact()[i]);
                      }
@@ -185,20 +190,23 @@ public class HW_Final_Prog {
                  nextStep();
              }
         }
-        
-
         // end of user choice 4
     }
 
     if(userChoice ==5){
         System.out.println("Please enter phonenumber to find a contact>");
         String userAddedPhoneNum = sc.next();
+        //find by phone is a method that takes array of contacts and user added phone number and 
+        //returns an array of contacts to update 
+        //this can grade 1 Functional Decomposition
+        //wondering if I ever get the good grade for styling!
+        //also next line can grade  7 One-dimensional arrays:
         Contact [] contactsToUpdate = findByPhone(arrOfContacts, userAddedPhoneNum);
         System.out.println("Here are the entries that you are planning to update:");
         for(int i=0;i<contactsToUpdate.length;i++){
             System.out.println(contactsToUpdate[i].toString());
          }
-
+         //making sure user is in agreeement with self
          System.out.println("Continue? Enter 1 to continue or anything else to go back to main menu");
         int userNextStep = sc.nextInt();
         if(userNextStep == 1){
@@ -207,8 +215,8 @@ public class HW_Final_Prog {
             if(userSelectionToUpdate ==1){
                 System.out.println("Please enter new first name");
                 String userNewFirst = sc.next();
-
                 for(int i=0;i<contactsToUpdate.length;i++){
+                    //GRADING FEATURE - Class Design using Access Modifiers:
                     contactsToUpdate[i].setFirstName(userNewFirst);
                  }
                  list1.updateContactFistName(contactsToUpdate);
@@ -219,13 +227,14 @@ public class HW_Final_Prog {
                     System.exit(0);
                 }
                 System.out.println("Writing to file");
-        
+                //again, due to performance issues maac vs pc I had to perform re-writing vs appending. 
+                //if I wanted to append, as I did at first, I would add TRUE to FileOutputStream below
+                //after fileName
                 for(int i =0;i<list1.listAllContact().length;i++){
                     outputStream.println(list1.listAllContact()[i]);
                 }
                 outputStream.close();
                 nextStep();
-
             }
             if(userSelectionToUpdate ==2){
                 System.out.println("Please enter new last name");
@@ -247,7 +256,6 @@ public class HW_Final_Prog {
                 }
                 outputStream.close();
                 nextStep();
-
             }
             if(userSelectionToUpdate ==3){
                 System.out.println("Please enter new phone name");
@@ -255,7 +263,8 @@ public class HW_Final_Prog {
                 for(int i=0;i<contactsToUpdate.length;i++){
                     contactsToUpdate[i].setPhoneNumber(userNewPhone);
                  }
-
+                 //self-explanatory method. please see ListOfContacts class 
+                 //method takes array of Contact objects and updates phone number
                  list1.updateContactPhoneNumber(contactsToUpdate);
 
                  try {
@@ -293,31 +302,20 @@ public class HW_Final_Prog {
                 outputStream.close();
                 nextStep();
             }
-            
-
-           
-
         }
         else{
             nextStep();
+            }
         }
-
-
-    }
-
-
-
+        //handling final option to exit
        if(userChoice == 0){
            System.out.println("Thank you! See you later!");
        }
-      
-
+      //end of handleUserOptions method
     }
 
     public static int displayMainMenu(Scanner keyboard){
-        // Scanner keyboard = new Scanner(System.in);
         int userInput;
-
         System.out.println("Hello! Welcome to the contacts book. Please select an option to continue:\n"+
         "1: List all contacts\n "+
         "2: Search contact by first OR last OR phone number \n "+
@@ -329,15 +327,12 @@ public class HW_Final_Prog {
         userInput = keyboard.nextInt();
         while(userInput!=1 && userInput!=2 && userInput!=3 && userInput!=4  && userInput!=5 && userInput!=0){
             
-            System.out.println("Please select a valid option 1-5 or 0 to exit");
+        System.out.println("Please select a valid option 1-5 or 0 to exit");
             
-            userInput = keyboard.nextInt();
+        userInput = keyboard.nextInt();
         }
-      
-        // keyboard.close();
         return userInput;
-        
-        //end of displayMainMenu
+
     }
 
     public static void nextStep(){
@@ -351,10 +346,9 @@ public class HW_Final_Prog {
         else{
             System.out.println("Thank you! Goodbye!");
         }
-        
+        //end of nextStep
     }
 
-    
     public static void listAllContacts(String [] someArr){
         System.out.println("Here are all entered contacts in your file: ");
         for(int i=0;i<someArr.length;i++){
@@ -404,7 +398,6 @@ public class HW_Final_Prog {
     public static Contact [] findByPhone(Contact [] arrOfContacts, String phoneNum){
         
         Contact [] results = new Contact[arrOfContacts.length];
-        
 
         for(int i=0,j=0;i<arrOfContacts.length;i++){
             if(phoneNum.toLowerCase().equals(arrOfContacts[i].getPhoneNumber().toLowerCase())){
@@ -425,25 +418,18 @@ public class HW_Final_Prog {
                     finalRes[a++]=results[z];
                 }
             }
-            
-
             return finalRes;
-
         }
-
         else{
            Contact [] finalRes2 = new Contact [0];
-           
            return finalRes2;
-    }
-       
+        }
         //end find by phone
     }
 
     public static int countLinesInTheFile(String userFileNameSelected){
         Scanner lineCounter = null;
         int counter=0;
-
         try {
             lineCounter = new Scanner (new FileInputStream(userFileNameSelected));
         } catch (FileNotFoundException e) {
@@ -457,10 +443,5 @@ public class HW_Final_Prog {
         return counter;
         //end of count lines in the file
     }
-
-    
-
-    
-
     //end of class
 }
